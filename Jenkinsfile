@@ -1,15 +1,19 @@
 pipeline {
   agent any
-  stages {
-    stage('') {
-      steps {
-        echo 'Hello from Blue Ocean'
-      }
-    }
-
-  }
   environment {
     COURSE = 'DevOps Calgary'
-    BRANCH = 'Main'
+    BRANCH = 'main'
+  }
+  stages {
+    stage('Audit Tools') {
+      steps {
+        echo "Audit all tools to be use on this pipeline ${BRANCH}"
+        sh "git --version"
+        sh "node --version"
+        sh "npm --version"
+        sh "ng --version"
+        sh "ansible --version"
+      }
+    }
   }
 }
