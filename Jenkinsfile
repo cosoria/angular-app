@@ -13,12 +13,15 @@ pipeline {
         sh "npm --version"
         sh "ng --version"
         sh "ansible --version"
+        echo "Workspace Folder: ${WORKSPACE}"
       }
     }
     stage('Install packages') {
 	  steps {
-		echo "Install conduit UI packages"
-		sh "npm install"
+		dir("${WORKSPACE}/conduit-ui") {
+		  echo "Install conduit UI packages"
+		  sh "npm install"
+		}
 	  }
     }
   }
