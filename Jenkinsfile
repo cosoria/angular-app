@@ -4,7 +4,7 @@ pipeline {
     COURSE = 'Calgary DevOps'
     BRANCH = 'main'
     WWWROOT = '/var/www/html'
-    SSHUSER = 'cosoria'
+    SSHUSER = 'jenkins'
   }
   stages {
     stage('Audit Tools') {
@@ -45,7 +45,7 @@ pipeline {
           sh "ssh web01 ls -l ${WWWROOT}"
           sh "ssh api01 ls -l ${WWWROOT}"
 
-          sh "scp -r ${WORKSPACE}/conduit-ui/dist jenkins@web01:${WWWROOT}/conduit"
+          sh "scp -r ${WORKSPACE}/conduit-ui/dist web01:/home/${SSHUSER}/conduit"
       }
     }
   }
