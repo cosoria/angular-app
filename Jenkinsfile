@@ -44,6 +44,8 @@ pipeline {
       steps {
           sh "ssh web01 ls -l ${WWWROOT}"
           sh "ssh api01 ls -l ${WWWROOT}"
+
+          sh "scp -r ${WORKSPACE}/conduit-ui/dist jenkins@web01:${WWWROOT}/conduit"
       }
     }
   }
