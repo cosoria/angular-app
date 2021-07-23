@@ -1,8 +1,10 @@
 pipeline {
   agent any
   environment {
-    COURSE = 'DevOps Calgary'
+    COURSE = 'Calgary DevOps'
     BRANCH = 'main'
+    WWWROOT = '/var/www/html'
+    SSHUSER = 'cosoria'
   }
   stages {
     stage('Audit Tools') {
@@ -17,26 +19,33 @@ pipeline {
       }
     }
     stage('Install packages') {
-	  steps {
-		dir("${WORKSPACE}/conduit-ui") {
-		  echo "Install conduit UI packages"
-		  sh "npm install"
-		}
-	  }
+      steps {
+        dir("${WORKSPACE}/conduit-ui") {
+          echo "Install conduit UI packages"
+          sh "npm install"
+        }
+      }
     }
     stage('Run linting') {
-	  steps {
-		dir("${WORKSPACE}/conduit-ui") {
-		  sh "npm run lint"
-		}
-	  }
+      steps {
+        dir("${WORKSPACE}/conduit-ui") {
+          sh "npm run lint"
+        }
+      }
     }
     stage('Build UI') {
-	  steps {
-		dir("${WORKSPACE}/conduit-ui") {
-		  sh "npm run build"
-		}
-	  }
+      steps {
+        dir("${WORKSPACE}/conduit-ui") {
+          sh "npm run build"
+        }
+      }
+    }
+    stage('Copy File To WEB01') {
+      steps {
+        sshagent(['ssh-credentials']) {
+          sh "scp -r ${WORKSPACE}/conduit-ui/dist ${SSHUSER}@web01:${WWWROOT}"
+        }
+      }
     }
   }
 }
