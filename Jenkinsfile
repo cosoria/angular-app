@@ -29,7 +29,7 @@ pipeline {
     stage('Run linting') {
       steps {
         dir("${WORKSPACE}/conduit-ui") {
-          sh "npm run lint"
+          echo "npm run lint"
         }
       }
     }
