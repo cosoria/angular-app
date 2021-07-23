@@ -42,9 +42,8 @@ pipeline {
     }
     stage('Copy File To WEB01') {
       steps {
-        sshagent(['ssh-credentials']) {
-          sh "scp -r ${WORKSPACE}/conduit-ui/dist ${SSHUSER}@web01:${WWWROOT}"
-        }
+          sh "ssh web01 ls -l ${WWWROOT}"
+          sh "ssh api01 ls -l ${WWWROOT}"
       }
     }
   }
