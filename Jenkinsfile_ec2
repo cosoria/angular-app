@@ -6,6 +6,7 @@ pipeline {
     WWWROOT = '/var/www'
     SSHUSER = 'jenkins'
     SSHKEY = '/var/lib/jenkins/.ssh/aws_ec2_key.pem'
+    WEBSERVER = 'ec2web03'
   }
   stages {
     stage('Audit Tools') {
@@ -46,12 +47,12 @@ pipeline {
         }
       }
     }
-    stage('Deploy app to WEB01') {
+    stage('Deploy app to WEB03') {
       steps {
-        sh "ssh -i ${SSHKEY} ec2web01 rm -rf /home/${SSHUSER}/conduit"
-        sh "scp -i ${SSHKEY} -r ${WORKSPACE}/conduit-ui/dist ec2web01:/home/${SSHUSER}/conduit"
-        sh "ssh -i ${SSHKEY} ec2web01 sudo rm -rf ${WWWROOT}/conduit"
-        sh "ssh -i ${SSHKEY} ec2web01 sudo cp -r /home/${SSHUSER}/conduit ${WWWROOT}/conduit"
+        sh "ssh -i ${SSHKEY} ${WEBSERVER} rm -rf /home/${SSHUSER}/conduit"
+        sh "scp -i ${SSHKEY} -r ${WORKSPACE}/conduit-ui/dist ${WEBSERVER}:/home/${SSHUSER}/conduit"
+        sh "ssh -i ${SSHKEY} ${WEBSERVER} sudo rm -rf ${WWWROOT}/conduit"
+        sh "ssh -i ${SSHKEY} ${WEBSERVER} sudo cp -r /home/${SSHUSER}/conduit ${WWWROOT}/conduit"
       }
     }
   }
